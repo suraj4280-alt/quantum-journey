@@ -1,0 +1,59 @@
+BLOCK 2
+LESSON 1
+STATEVECTOR
+
+Statevector is the mathematical representation
+of a quantum state.
+
+For one qubit:
+
+|ψ⟩ = α|0⟩ + β|1⟩
+
+Statevector
+
+[α, β]
+
+The amplitudes determine the quantum state.
+
+Measurement probabilities are:
+
+P(0)=|α|²
+
+P(1)=|β|²
+
+Examples
+
+Default state
+
+|0⟩
+
+↓
+
+[1,0]
+
+
+After X
+
+|1⟩
+
+↓
+
+[0,1]
+
+
+After H
+
+|+⟩
+
+↓
+
+[1/√2,1/√2]
+
+
+After X then H
+
+|−⟩
+
+↓
+
+[1/√2,-1/√2]

@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Decentralized Peer Trade Networks</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f0f4f8 0%, #e8eefa 50%, #f5f3ff 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            color: #1f2937;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 40px 24px;
+            position: relative;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            position: relative;
+            margin-bottom: 48px;
+        }
+
+        .header-icon {
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 48px;
+            height: 48px;
+            background: rgba(255,255,255,0.7);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.5);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        .header-icon svg {
+            width: 24px;
+            height: 24px;
+            color: #8b5cf6;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 8px;
+            letter-spacing: -0.02em;
+        }
+
+        .header p {
+            font-size: 16px;
+            color: #6b7280;
+            font-weight: 400;
+        }
+
+        .secure-badge {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.7);
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.5);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            font-size: 14px;
+            font-weight: 500;
+            color: #4c1d95;
+        }
+
+        .secure-badge svg {
+            width: 20px;
+            height: 20px;
+            color: #6d28d9;
+        }
+
+        /* Main Layout */
+        .main-content {
+            position: relative;
+            min-height: 640px;
+            margin-bottom: 40px;
+        }
+
+        /* Portal Cards */
+        .portal-card {
+            background: rgba(255,255,255,0.85);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+            border: 1px solid rgba(255,255,255,0.6);
+            width: 340px;
+            position: absolute;
+            top: 0;
+        }
+
+        .sender-portal {
+            left: 40px;
+        }
+
+        .receiver-portal {
+            right: 40px;
+        }
+
+        .portal-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .sender-portal .portal-header {
+            color: #7c3aed;
+        }
+
+        .receiver-portal .portal-header {
+            color: #2563eb;
+        }
+
+        .portal-header svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* File Card */
+        .file-card {
+            background: rgba(255,255,255,0.9);
+            border-radius: 12px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+            border: 1px solid rgba(0,0,0,0.04);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+        }
+
+        .pdf-icon {
+            width: 40px;
+            height: 48px;
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 10px;
+            font-weight: 700;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .pdf-icon::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 12px;
+            height: 12px;
+            background: rgba(255,255,255,0.3);
+            border-bottom-left-radius: 8px;
+        }
+
+        .file-info {
+            flex: 1;
+        }
+
+        .file-name {
+            font-weight: 600;
+            font-size: 14px;
+            color: #1f2937;
+            margin-bottom: 4px;
+        }
+
+        .file-meta {
+            font-size: 12px;
+            color: #9ca3af;
+        }
+
+        .check-icon {
+            width: 24px;
+            height: 24px;
+            color: #10b981;
+            flex-shrink: 0;
+        }
+
+        /* Action Button */
+        .action-btn {
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            border: none;
+            font-family: inherit;
+            font-weight: 600;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: default;
+            color: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .sender-btn {
+            background: linear-gradient(135deg, #a78bfa, #8b5cf6);
+        }
+
+        .receiver-status {
+            background: rgba(255,255,255,0.9);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid rgba(0,0,0,0.04);
+        }
+
+        .receiver-status h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 12px;
+        }
+
+        .progress-bar-bg {
+            width: 100%;
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            border-radius: 4px;
+            width: 45%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sender-portal .progress-bar-fill {
+            background: linear-gradient(90deg, #a78bfa, #8b5cf6);
+        }
+
+        .receiver-portal .progress-bar-fill {
+            background: linear-gradient(90deg, #60a5fa, #3b82f6);
+        }
+
+        .progress-shimmer {
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .progress-percent {
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .sender-portal .progress-percent {
+            color: #8b5cf6;
+        }
+
+        .receiver-portal .progress-percent {
+            color: #3b82f6;
+        }
+
+        /* Center Badge */
+        .secure-transfer-badge {
+            position: absolute;
+            left: 50%;
+            top: 80px;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.9);
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.6);
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            font-size: 13px;
+            font-weight: 600;
+            color: #4c1d95;
+            z-index: 10;
+        }
+
+        .secure-transfer-badge svg {
+            width: 18px;
+            height: 18px;
+            color: #6d28d9;
+        }
+
+        /* Flying Pages Animation */
+        .animation-area {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 500px;
+            height: 200px;
+            pointer-events: none;
+        }
+
+        .dotted-path {
+            position: absolute;
+            left: -60px;
+            right: -60px;
+            top: 50%;
+            height: 2px;
+            transform: translateY(-50%);
+        }
+
+        .dotted-path svg {
+            width: 100%;
+            height: 60px;
+            overflow: visible;
+        }
+
+        .flying-page {
+            position: absolute;
+            width: 36px;
+            height: 46px;
+            background: white;
+            border-radius: 4px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1), 0 0 0 1px rgba(0,0,0,0.04);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 700;
+            color: #4c1d95;
+            opacity: 0;
+        }
+
+        .flying-page::before {
+            content: '';
+            position: absolute;
+            top: 8px;
+            left: 6px;
+            right: 6px;
+            height: 2px;
+            background: #e5e7eb;
+            border-radius: 1px;
+            box-shadow: 0 6px 0 #e5e7eb, 0 12px 0 #e5e7eb, 0 18px 0 #e5e7eb;
+        }
+
+        .flying-page:nth-child(1) { animation: flyPage1 4s infinite; }
+        .flying-page:nth-child(2) { animation: flyPage2 4s infinite 0.4s; }
+        .flying-page:nth-child(3) { animation: flyPage3 4s infinite 0.8s; }
+        .flying-page:nth-child(4) { animation: flyPage4 4s infinite 1.2s; }
+        .flying-page:nth-child(5) { animation: flyPage5 4s infinite 1.6s; }
+
+        @keyframes flyPage1 {
+            0% { left: -40px; top: 60%; opacity: 0; transform: rotate(-15deg) scale(0.8); }
+            15% { opacity: 1; }
+            85% { opacity: 1; }
+            100% { left: 105%; top: 30%; opacity: 0; transform: rotate(15deg) scale(0.8); }
+        }
+
+        @keyframes flyPage2 {
+            0% { left: -40px; top: 50%; opacity: 0; transform: rotate(-10deg) scale(0.9); }
+            15% { opacity: 1; }
+            85% { opacity: 1; }
+            100% { left: 105%; top: 40%; opacity: 0; transform: rotate(10deg) scale(0.9); }
+        }
+
+        @keyframes flyPage3 {
+            0% { left: -40px; top: 40%; opacity: 0; transform: rotate(-5deg) scale(1); }
+            15% { opacity: 1; }
+            85% { opacity: 1; }
+            100% { left: 105%; top: 50%; opacity: 0; transform: rotate(5deg) scale(1); }
+        }
+
+        @keyframes flyPage4 {
+            0% { left: -40px; top: 30%; opacity: 0; transform: rotate(0deg) scale(0.9); }
+            15% { opacity: 1; }
+            85% { opacity: 1; }
+            100% { left: 105%; top: 60%; opacity: 0; transform: rotate(15deg) scale(0.9); }
+        }
+
+        @keyframes flyPage5 {
+            0% { left: -40px; top: 20%; opacity: 0; transform: rotate(5deg) scale(0.8); }
+            15% { opacity: 1; }
+            85% { opacity: 1; }
+            100% { left: 105%; top: 70%; opacity: 0; transform: rotate(20deg) scale(0.8); }
+        }
+
+        /* Laptops */
+        .laptop-area {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 60px;
+        }
+
+        .laptop-wrapper {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .laptop {
+            width: 280px;
+            height: 180px;
+            position: relative;
+        }
+
+        .laptop-screen {
+            width: 260px;
+            height: 165px;
+            background: #1f2937;
+            border-radius: 12px 12px 0 0;
+            padding: 8px 8px 0 8px;
+            margin: 0 auto;
+            position: relative;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+        }
+
+        .laptop-display {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #f9fafb, #f3f4f6);
+            border-radius: 8px 8px 0 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .laptop-base {
+            width: 280px;
+            height: 12px;
+            background: linear-gradient(to bottom, #374151, #1f2937);
+            border-radius: 0 0 8px 8px;
+            margin: 0 auto;
+            position: relative;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .laptop-base::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 4px;
+            background: #4b5563;
+            border-radius: 0 0 4px 4px;
+        }
+
+        .laptop-stand {
+            width: 60px;
+            height: 20px;
+            background: linear-gradient(to bottom, #4b5563, #374151);
+            margin: 0 auto;
+            clip-path: polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%);
+        }
+
+        .screen-content h3 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 8px;
+        }
+
+        .screen-content p {
+            font-size: 11px;
+            color: #6b7280;
+            margin-bottom: 12px;
+        }
+
+        .screen-progress {
+            width: 140px;
+            height: 6px;
+            background: #e5e7eb;
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 4px;
+        }
+
+        .screen-progress-fill {
+            height: 100%;
+            width: 45%;
+            border-radius: 3px;
+            position: relative;
+        }
+
+        .sender-laptop .screen-progress-fill {
+            background: linear-gradient(90deg, #c4b5fd, #8b5cf6);
+        }
+
+        .receiver-laptop .screen-progress-fill {
+            background: linear-gradient(90deg, #93c5fd, #3b82f6);
+        }
+
+        .screen-percent {
+            font-size: 12px;
+            font-weight: 700;
+            margin-top: 4px;
+        }
+
+        .sender-laptop .screen-percent {
+            color: #8b5cf6;
+        }
+
+        .receiver-laptop .screen-percent {
+            color: #3b82f6;
+        }
+
+        /* Paper Stacks */
+        .paper-stack {
+            position: absolute;
+            bottom: 20px;
+            width: 60px;
+            height: 80px;
+        }
+
+        .paper-stack-left {
+            right: -20px;
+        }
+
+        .paper-stack-right {
+            left: -20px;
+        }
+
+        .paper {
+            position: absolute;
+            width: 50px;
+            height: 70px;
+            background: white;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border: 1px solid rgba(0,0,0,0.06);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            padding-bottom: 8px;
+            font-size: 10px;
+            font-weight: 600;
+            color: #9ca3af;
+        }
+
+        .paper-stack-left .paper {
+            background: linear-gradient(135deg, #fdf2f8, #fce7f3);
+            color: #db2777;
+        }
+
+        .paper-stack-right .paper {
+            background: linear-gradient(135deg, #eff6ff, #dbeafe);
+            color: #2563eb;
+        }
+
+        .paper:nth-child(1) { transform: rotate(-8deg) translateX(-5px); z-index: 1; }
+        .paper:nth-child(2) { transform: rotate(-4deg) translateX(-2px); z-index: 2; }
+        .paper:nth-child(3) { transform: rotate(0deg); z-index: 3; }
+        .paper:nth-child(4) { transform: rotate(4deg) translateX(2px); z-index: 4; }
+        .paper:nth-child(5) { transform: rotate(8deg) translateX(5px); z-index: 5; }
+
+        .paper::before {
+            content: '';
+            position: absolute;
+            top: 8px;
+            left: 6px;
+            right: 6px;
+            height: 1px;
+            background: currentColor;
+            opacity: 0.2;
+            box-shadow: 0 8px 0 currentColor, 0 16px 0 currentColor, 0 24px 0 currentColor, 0 32px 0 currentColor;
+        }
+
+        .paper-number-top {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            font-size: 14px;
+            font-weight: 700;
+            color: inherit;
+            opacity: 0.6;
+        }
+
+        .paper-number-bottom {
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        /* Plants */
+        .plant {
+            position: absolute;
+            bottom: 0;
+            width: 40px;
+            height: 60px;
+        }
+
+        .plant-left {
+            left: -60px;
+        }
+
+        .plant-right {
+            right: -60px;
+        }
+
+        .plant-leaf {
+            position: absolute;
+            bottom: 0;
+            width: 20px;
+            height: 30px;
+            background: linear-gradient(135deg, #a7f3d0, #6ee7b7);
+            border-radius: 0 20px 0 20px;
+            transform-origin: bottom left;
+        }
+
+        .plant-leaf:nth-child(1) { left: 10px; transform: rotate(-10deg); height: 35px; }
+        .plant-leaf:nth-child(2) { left: 15px; transform: rotate(15deg); height: 28px; background: linear-gradient(135deg, #6ee7b7, #34d399); }
+        .plant-leaf:nth-child(3) { left: 5px; transform: rotate(-25deg); height: 22px; background: linear-gradient(135deg, #d1fae5, #a7f3d0); }
+
+        .plant-pot {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 24px;
+            height: 20px;
+            background: linear-gradient(to bottom, #e5e7eb, #d1d5db);
+            border-radius: 0 0 6px 6px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        /* Stepper */
+        .stepper {
+            background: rgba(255,255,255,0.85);
+            backdrop-filter: blur(20px);
+            border-radius: 16px;
+            padding: 24px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+            border: 1px solid rgba(255,255,255,0.6);
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            position: relative;
+        }
+
+        .step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            right: -40px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 24px;
+            height: 2px;
+            background: repeating-linear-gradient(to right, #d1d5db 0, #d1d5db 4px, transparent 4px, transparent 8px);
+        }
+
+        .step-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f3f4f6;
+            color: #9ca3af;
+        }
+
+        .step.completed .step-icon {
+            background: #d1fae5;
+            color: #10b981;
+        }
+
+        .step.active .step-icon {
+            background: #ede9fe;
+            color: #7c3aed;
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2); }
+            50% { box-shadow: 0 0 0 6px rgba(139, 92, 246, 0.1); }
+        }
+
+        .step-text {
+            font-size: 14px;
+            font-weight: 500;
+            color: #6b7280;
+        }
+
+        .step.completed .step-text {
+            color: #10b981;
+        }
+
+        .step.active .step-text {
+            color: #7c3aed;
+            font-weight: 600;
+        }
+
+        .status-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: #d1fae5;
+            color: #059669;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .status-badge svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .portal-card {
+                width: 280px;
+            }
+            .laptop {
+                width: 220px;
+                height: 150px;
+            }
+            .laptop-screen {
+                width: 200px;
+                height: 135px;
+            }
+            .laptop-base {
+                width: 220px;
+            }
+            .animation-area {
+                width: 300px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                min-height: auto;
+                display: flex;
+                flex-direction: column;
+                gap: 24px;
+            }
+            .portal-card {
+                position: relative;
+                left: auto !important;
+                right: auto !important;
+                width: 100%;
+                top: auto;
+            }
+            .laptop-area {
+                position: relative;
+                flex-direction: column;
+                align-items: center;
+                gap: 40px;
+                padding: 0;
+            }
+            .animation-area {
+                display: none;
+            }
+            .secure-transfer-badge {
+                display: none;
+            }
+            .stepper {
+                flex-wrap: wrap;
+                gap: 16px;
+            }
+            .step:not(:last-child)::after {
+                display: none;
+            }
+            .header {
+                margin-bottom: 24px;
+            }
+            .header-icon, .secure-badge {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-icon">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                </svg>
+            </div>
+            <h1>Decentralized Peer Trade Networks</h1>
+            <p>Share. Exchange. Learn Together.</p>
+            <div class="secure-badge">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                </svg>
+                Secure & Decentralized
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Sender Portal -->
+            <div class="portal-card sender-portal">
+                <div class="portal-header">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+                    </svg>
+                    Sender Portal
+                </div>
+                <div class="file-card">
+                    <div class="pdf-icon">PDF</div>
+                    <div class="file-info">
+                        <div class="file-name">Data Structures Notes.pdf</div>
+                        <div class="file-meta">20 Pages • 2.4 MB</div>
+                    </div>
+                    <svg class="check-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
+                    </svg>
+                </div>
+                <button class="action-btn sender-btn">
+                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+                    </svg>
+                    Sending Notes...
+                </button>
+            </div>
+
+            <!-- Receiver Portal -->
+            <div class="portal-card receiver-portal">
+                <div class="portal-header">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                    </svg>
+                    Receiver Portal
+                </div>
+                <div class="receiver-status">
+                    <h4>Receiving Notes...</h4>
+                    <div class="progress-bar-bg">
+                        <div class="progress-bar-fill">
+                            <div class="progress-shimmer"></div>
+                        </div>
+                    </div>
+                    <div class="progress-text">
+                        <span>Page 9 of 20</span>
+                        <span class="progress-percent">45%</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Secure Transfer Badge -->
+            <div class="secure-transfer-badge">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                </svg>
+                Secure Transfer
+            </div>
+
+            <!-- Flying Pages Animation -->
+            <div class="animation-area">
+                <div class="dotted-path">
+                    <svg viewBox="0 0 620 60" preserveAspectRatio="none">
+                        <path d="M 0 30 Q 155 5, 310 30 T 620 30" fill="none" stroke="#c4b5fd" stroke-width="2" stroke-dasharray="6 6" opacity="0.6"/>
+                        <path d="M 0 30 Q 155 55, 310 30 T 620 30" fill="none" stroke="#93c5fd" stroke-width="2" stroke-dasharray="6 6" opacity="0.6"/>
+                    </svg>
+                </div>
+                <div class="flying-page">7</div>
+                <div class="flying-page">8</div>
+                <div class="flying-page">9</div>
+                <div class="flying-page">10</div>
+                <div class="flying-page">11</div>
+            </div>
+
+            <!-- Laptops -->
+            <div class="laptop-area">
+                <!-- Left Laptop -->
+                <div class="laptop-wrapper">
+                    <div class="laptop sender-laptop">
+                        <div class="laptop-screen">
+                            <div class="laptop-display">
+                                <div class="screen-content">
+                                    <h3>Sending...</h3>
+                                    <p>Page 9 of 20</p>
+                                    <div class="screen-progress">
+                                        <div class="screen-progress-fill"></div>
+                                    </div>
+                                    <div class="screen-percent">45%</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="laptop-base"></div>
+                        <div class="laptop-stand"></div>
+                    </div>
+                    <div class="paper-stack paper-stack-left">
+                        <div class="paper">
+                            <span class="paper-number-top">1</span>
+                        </div>
+                        <div class="paper">
+                            <span class="paper-number-top">1</span>
+                        </div>
+                        <div class="paper">
+                            <span class="paper-number-top">1</span>
+                        </div>
+                        <div class="paper">
+                            <span class="paper-number-top">1</span>
+                        </div>
+                        <div class="paper">
+                            <span class="paper-number-top">1</span>
+                            <span class="paper-number-bottom">20</span>
+                        </div>
+                    </div>
+                    <div class="plant plant-left">
+                        <div class="plant-pot"></div>
+                        <div class="plant-leaf"></div>
+                        <div class="plant-leaf"></div>
+                        <div class="plant-leaf"></div>
+                    </div>
+                </div>
+
+                <!-- Right Laptop -->
+                <div class="laptop-wrapper">
+                    <div class="laptop receiver-laptop">
+                        <div class="laptop-screen">
+                            <div class="laptop-display">
+                                <div class="screen-content">
+                                    <h3>Receiving...</h3>
+                                    <p>Page 9 of 20</p>
+                                    <div class="screen-progress">
+                                        <div class="screen-progress-fill"></div>
+                                    </div>
+                                    <div class="screen-percent">45%</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="laptop-base"></div>
+                        <div class="laptop-stand"></div>
+                    </div>
+                    <div class="paper-stack paper-stack-right">
+                        <div class="paper">
+                            <span class="paper-number-top">1</span>
+                        </div>
+                        <div class="paper">
+                            <span class="paper-number-top">1</span>
+                        </div>
+                        <div class="paper">
+                            <span class="paper-number-top">1</span>
+                        </div>
+                        <div class="paper">
+                            <span class="paper-number-top">1</span>
+                        </div>
+                        <div class="paper">
+                            <span class="paper-number-top">1</span>
+                            <span class="paper-number-bottom">20</span>
+                        </div>
+                    </div>
+                    <div class="plant plant-right">
+                        <div class="plant-pot"></div>
+                        <div class="plant-leaf"></div>
+                        <div class="plant-leaf"></div>
+                        <div class="plant-leaf"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stepper -->
+        <div class="stepper">
+            <div class="step completed">
+                <div class="step-icon">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
+                    </svg>
+                </div>
+                <span class="step-text">Select Notes</span>
+                <svg width="16" height="16" style="margin-left:4px;color:#10b981" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
+                </svg>
+            </div>
+            <div class="step active">
+                <div class="step-icon">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+                    </svg>
+                </div>
+                <span class="step-text">Sending</span>
+            </div>
+            <div class="step">
+                <div class="step-icon">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                    </svg>
+                </div>
+                <span class="step-text">Receiving</span>
+            </div>
+            <div class="step">
+                <div class="step-icon">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                </div>
+                <span class="step-text">Completed</span>
+            </div>
+            <div class="status-badge">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
+                </svg>
+                Transfer in Progress
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Add subtle floating animation to portal cards
+        const senderPortal = document.querySelector('.sender-portal');
+        const receiverPortal = document.querySelector('.receiver-portal');
+        
+        let time = 0;
+        function animateFloat() {
+            time += 0.01;
+            const y1 = Math.sin(time) * 4;
+            const y2 = Math.cos(time) * 4;
+            senderPortal.style.transform = `translateY(${y1}px)`;
+            receiverPortal.style.transform = `translateY(${y2}px)`;
+            requestAnimationFrame(animateFloat);
+        }
+        animateFloat();
+
+        // Animate paper stacks subtle breathing
+        const papers = document.querySelectorAll('.paper');
+        papers.forEach((paper, index) => {
+            paper.style.animation = `breathe 3s ease-in-out infinite ${index * 0.2}s`;
+        });
+
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes breathe {
+                0%, 100% { transform: translateY(0) rotate(var(--r, 0deg)); }
+                50% { transform: translateY(-3px) rotate(var(--r, 0deg)); }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Set rotation variables for papers
+        const leftPapers = document.querySelectorAll('.paper-stack-left .paper');
+        const rightPapers = document.querySelectorAll('.paper-stack-right .paper');
+        const rotations = [-8, -4, 0, 4, 8];
+        
+        leftPapers.forEach((p, i) => p.style.setProperty('--r', rotations[i] + 'deg'));
+        rightPapers.forEach((p, i) => p.style.setProperty('--r', (-rotations[i]) + 'deg'));
+    </script>
+</body>
+</html>
